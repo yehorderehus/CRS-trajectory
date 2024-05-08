@@ -77,7 +77,6 @@ class DashCallbacks(AppFunctions):
             if 'updating' in updating:
                 return self.trajectory.get_figure()
             return dash.no_update
-            # TODO possibly: add "No data" message
 
         @self.app.callback(
             Output('draw-interval-component', 'interval'),

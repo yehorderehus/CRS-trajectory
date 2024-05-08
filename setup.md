@@ -1,17 +1,23 @@
-## Tea-How to run the program
+## Commands for command line to run the program
 
-**Create virtual environment with name *venv* (Windows / Linux, WSL)**
+**Optional: Create virtual environment with name *venv* (Windows / Linux, WSL)**
+
+Windows
 ```sh
 python -m venv venv
 ```
+Linux, WSL
 ```sh
 python3 -m venv venv
 ```
 
-**Activate virtual environment with name *venv* (Windows / Linux, WSL)**
+**Optional: Activate virtual environment with name *venv***
+
+Windows
 ```sh
 venv\Scripts\activate
 ```
+Linux, WSL
 ```sh
 source venv/bin/activate
 ```

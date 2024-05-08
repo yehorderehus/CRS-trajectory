@@ -22,7 +22,7 @@ class DataReader:
         self.readed_data = None
         self.get_index = 0
 
-    def get_data(self) -> Union[pd.DataFrame, None]:
+    async def get_data(self) -> Union[pd.DataFrame, None]:
         if self.get_index < len(self.readed_data):
             self.get_index += 1
             return pd.DataFrame([self.readed_data.iloc[self.get_index - 1]]) if self.readed_data is not None else None
@@ -31,7 +31,7 @@ class DataReader:
         if self.file_path is None or self.columns is None:
             return None
         if self.readed_data is not None and not self.readed_data.empty:
-            return self.get_data()
+            return await self.get_data()
         try:
             with open(self.file_path, 'r') as file:
                 if self.file_path.endswith('.json'):
@@ -46,7 +46,7 @@ class DataReader:
             else:
                 raise ValueError("DataReader ValueError: no data read from file.")
         except FileNotFoundError as fe:
-            print(f"DataReader FileNotFoundError: {fe}")
+            # print(f"DataReader FileNotFoundError: {fe}")
             return None
         except json.JSONDecodeError as je:
             print(f"DataReader JSONDecodeError: {je}")

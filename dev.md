@@ -8,4 +8,4 @@ autopep8 --max-line-length=999 --in-place scripts/
 - Graph may stop updating with period of time or after some button actions.
 
 **TODOs:**
-- Implement correct calculation of the trajectory based on altitude and acceleration with rotation.
+- Implement correct calculation of the trajectory based on altitude and acceleration with rotation. (Too costly task)

@@ -23,4 +23,4 @@ class DataExtractor:
             print(f"DataExtractor KeyError: {ke}")
             return None
 
-# Output PdDataFrames column names are "columns" keys, and wanted column names from data are "columns" values.
+# Output PdDataFrame column names are "columns" keys

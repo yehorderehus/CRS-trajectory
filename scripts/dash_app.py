@@ -23,7 +23,7 @@ class DashApp:
         self.app_setup()
         print('App init')
 
-    def app_setup(self):
+    def app_setup(self) -> None:
         self.app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY],
                              meta_tags=[{'name': 'viewport', 'content': 'width=device-width, initial-scale=1.0'}])
         self.app.title = 'CRS Trajectory Viewer'
@@ -39,7 +39,7 @@ class DashApp:
                 n_intervals=0),
             html.Div([
                 dbc.Col([
-                        html.Img(src=Image.open('gui_assets/crs_logo.png'), style={'width': '100%'})
+                        html.Img(src=Image.open('scripts/assets/crs_logo.png'), style={'width': '100%'})
                         ]),
                 html.Div([
                     dbc.Col([

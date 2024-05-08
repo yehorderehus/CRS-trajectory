@@ -1,0 +1,26 @@
+{
+    "source": "file",
+    "updating": "updating",
+    "url": "https://czechrockets.euweb.cz/get.php",
+    "file-path": "data/2024_demo1.csv",
+    "columns": {
+        "lon": "",
+        "lat": "",
+        "alt": " EST_REL_ALTI [m]",
+        "acc_x": " MPU_ACC_X [G]",
+        "acc_y": " MPU_ACC_Y [G]",
+        "acc_z": " MPU_ACC_Z [G]",
+        "rot_x": " MPU_GYRO_X [°/s]",
+        "rot_y": " MPU_GYRO_Y [°/s]",
+        "rot_z": " MPU_GYRO_Z [°/s]",
+        "mag_x": " MPU_MAG_X [uT]",
+        "mag_y": " MPU_MAG_Y [uT]",
+        "mag_z": " MPU_MAG_Z [uT]",
+        "parachute": " FSW_PARACHUTE_RELEASED [bool]",
+        "payload": " FSW_PAYLOAD_RELEASED [bool]",
+        "state": " FSW_STATE [enum]",
+        "timestamp": " TIMESTAMP [s]"
+    },
+    "data-interval": 100,
+    "draw-interval": 100
+}

@@ -1,7 +1,7 @@
 {
     "source": "file",
     "updating": "updating",
-    "url": "",
+    "url": "https://czechrockets.euweb.cz/get.php",
     "file-path": "data/2023_finals1.csv",
     "columns": {
         "lon": "GPS_lon",

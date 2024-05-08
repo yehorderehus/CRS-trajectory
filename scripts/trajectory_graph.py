@@ -39,7 +39,7 @@ class TrajectoryGraph:
     def init_mission_image(self) -> None:
         self.figure.update_layout(images=[
             dict(
-                source=Image.open('gui_assets/sherpa.png'),
+                source=Image.open('scripts/assets/sherpa.png'),
                 xref='paper',
                 yref='paper',
                 x=0,
@@ -56,7 +56,7 @@ class TrajectoryGraph:
         self.init_mission_image()  # Use it to remove the previous state image
         self.figure.add_layout_image(
             dict(
-                source=Image.open(f'gui_assets/state_{state}.png'),
+                source=Image.open(f'scripts/assets/state_{state}.png'),
                 xref='paper',
                 yref='paper',
                 x=0.4,
@@ -68,14 +68,12 @@ class TrajectoryGraph:
             )
         )
         self.time_state_changed = time.time()
-        threading.Thread(target=self.schedule_init_mission_image).start()
+        threading.Thread(target=self.schedule_init_mission_image).start()  # mission 'update_layout(images=' will reset the state image
 
     def schedule_init_mission_image(self) -> None:
-        delay = 2
-        time.sleep(delay)  # Wait for 'delay' seconds
-        current_time = time.time()
-        if current_time - self.time_state_changed >= delay:
-            self.init_mission_image()
+        delay = 2  # seconds
+        time.sleep(delay)
+        self.init_mission_image()
 
     def update_graph(self, points: pd.DataFrame) -> None:
         if points.empty:

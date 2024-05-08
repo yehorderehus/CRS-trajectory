@@ -37,6 +37,7 @@ class AppFunctions(DashApp):
         if new_data is not None:
             if last_data is None or last_data is not None and not new_data.equals(last_data):
                 self.manage_state(new_data)
+                print(new_data)  # If needed
                 trajectory_data = self.configuration.configure_data(new_data)
                 if trajectory_data is not None:
                     frames = [frame for frame in [self.trajectory_data, trajectory_data] if not frame.empty]
@@ -54,7 +55,7 @@ class AppFunctions(DashApp):
 
                 self.manage_data(new_data)
 
-                if self.data_interval > 0:
+                if self.data_interval > 0 and isinstance(self.data_interval, int):
                     await asyncio.sleep(self.data_interval / 1000)
                 else:
                     await asyncio.sleep(1)
