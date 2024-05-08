@@ -39,7 +39,7 @@ Each column can be *int* or *float* or *string*
 Altitude and state are mandatory, followed by longitude and latitude or timestamp. If no GPS data is available, deviation is poorly simulated. Other input columns are not in use.
 
 ## Reads
-- For environment setup and running the program, refer to [setup.md](use.md).
+- For environment setup and running the program, refer to [setup.md](setup.md).
 - For bugs and development see [dev.md](dev.md).
 
 ## Preview
