@@ -1,6 +1,6 @@
 ## Commands for command line to run the program
 
-**Optional: Create virtual environment with name *venv* (Windows / Linux, WSL)**
+**Optional: Create virtual environment with name *venv***
 
 Windows
 ```sh
@@ -28,6 +28,13 @@ pip3 install -r requirements.txt
 ```
 
 **Run the program (default local path for the running program is http://127.0.0.1:8050/**)
+
+Windows
+```sh
+python main.py
+```
+
+Linux, WSL
 ```sh
 python3 main.py
 ```

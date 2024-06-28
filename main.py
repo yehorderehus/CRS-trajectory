@@ -1,14 +1,12 @@
 from scripts.main_wrapper import MainWrapper
-
-import traceback
+from scripts.logging_config import logger
 
 
 def main():
     try:
         MainWrapper()  # The last class in the inheritance chain
     except Exception as e:
-        print(f"Main error: {e}")
-        traceback.print_exc()
+        logger.error(f'Main Error: {e}')
 
 
 if __name__ == "__main__":

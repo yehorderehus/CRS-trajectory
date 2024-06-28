@@ -10,14 +10,13 @@ from PIL import Image
 
 class DashApp:
     def __init__(self) -> None:
-        config = json.load(open('config_path.json'))
+        config = json.load(open('configs/config_path.json'))
         self.default = json.load(open(config['config-path']))
         self.source = self.default['source']
         self.updating = self.default['updating']
         self.url = self.default['url']
         self.file_path = self.default['file-path']
         self.columns = self.default['columns']
-        self.data_interval = self.default['data-interval']
         self.draw_interval = self.default['draw-interval']
         self.trajectory = TrajectoryGraph()
         self.app_setup()
@@ -27,7 +26,7 @@ class DashApp:
         self.app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY],
                              meta_tags=[{'name': 'viewport', 'content': 'width=device-width, initial-scale=1.0'}])
         self.app.title = 'CRS Trajectory Viewer'
-        self.app._favicon='favicon.png'
+        self.app._favicon = 'favicon.png'
         self.app.layout = dbc.Container([dbc.Row([
             html.Div([
                 dcc.Graph(id='trajectory-graph', figure=self.trajectory.get_figure(),
@@ -71,69 +70,45 @@ class DashApp:
                     ]),
                     dbc.Col([
                         dbc.DropdownMenu([
-                            dbc.Col(id='timestamp-field', children=[
-                                dbc.Label('Timestamp:'),
-                                dbc.Input(id='timestamp-input', type='text', placeholder='Timestamp column name', value=self.columns.get('timestamp', None))
-                            ]),
-                            dbc.Col(id='state-field', children=[
-                                dbc.Label('State:'),
-                                dbc.Input(id='state-input', type='text', placeholder='State column name', value=self.columns.get('state', None))
-                            ]),
-                            dbc.Col(id='payload-field', children=[
-                                dbc.Label('Payload:'),
-                                dbc.Input(id='payload-input', type='text', placeholder='Payload column name', value=self.columns.get('payload', None))
-                            ]),
-                            dbc.Col(id='parachute-field', children=[
-                                dbc.Label('Parachute:'),
-                                dbc.Input(id='parachute-input', type='text', placeholder='Parachute column name', value=self.columns.get('parachute', None))
-                            ]),
                             dbc.Col(id='lon-field', children=[
                                 dbc.Label('Longitude:'),
-                                dbc.Input(id='lon-input', type='text', placeholder='Longitude column name', value=self.columns.get('lon', None))
+                                dbc.Input(id='lon-input', type='text', placeholder='Longitude column name', value=str(self.columns.get('lon', "")))
                             ]),
                             dbc.Col(id='lat-field', children=[
                                 dbc.Label('Latitude:'),
-                                dbc.Input(id='lat-input', type='text', placeholder='Latitude column name', value=self.columns.get('lat', None))
+                                dbc.Input(id='lat-input', type='text', placeholder='Latitude column name', value=str(self.columns.get('lat', "")))
                             ]),
                             dbc.Col(id='alt-field', children=[
                                 dbc.Label('Altitude:'),
-                                dbc.Input(id='alt-input', type='text', placeholder='Altitude column name', value=self.columns.get('alt', None))
+                                dbc.Input(id='alt-input', type='text', placeholder='Altitude column name', value=str(self.columns.get('alt', "")))
                             ]),
-                            dbc.Col(id='acc-x-field', children=[
-                                dbc.Label('Acceleration X:'),
-                                dbc.Input(id='acc-x-input', type='text', placeholder='Acceleration X column name', value=self.columns.get('acc_x', None))
+                            dbc.Col(id='acc-field', children=[
+                                dbc.Label('Acceleration:'),
+                                dbc.Input(id='acc-input', type='text', placeholder='Acceleration column name', value=str(self.columns.get('acc', "")))
                             ]),
-                            dbc.Col(id='acc-y-field', children=[
-                                dbc.Label('Acceleration Y:'),
-                                dbc.Input(id='acc-y-input', type='text', placeholder='Acceleration Y column name', value=self.columns.get('acc_y', None))
+                            dbc.Col(id='rot-field', children=[
+                                dbc.Label('Rotation:'),
+                                dbc.Input(id='rot-input', type='text', placeholder='Rotation column name', value=str(self.columns.get('rot', "")))
                             ]),
-                            dbc.Col(id='acc-z-field', children=[
-                                dbc.Label('Acceleration Z:'),
-                                dbc.Input(id='acc-z-input', type='text', placeholder='Acceleration Z column name', value=self.columns.get('acc_z', None))
+                            dbc.Col(id='euler-h-field', children=[
+                                dbc.Label('Euler-h:'),
+                                dbc.Input(id='euler-h-input', type='text', placeholder='Euler H column name', value=str(self.columns.get('euler_h', "")))
                             ]),
-                            dbc.Col(id='rot-x-field', children=[
-                                dbc.Label('Rotation X:'),
-                                dbc.Input(id='rot-x-input', type='text', placeholder='Rotation X column name', value=self.columns.get('rot_x', None))
+                            dbc.Col(id='euler-p-field', children=[
+                                dbc.Label('Euler-p:'),
+                                dbc.Input(id='euler-p-input', type='text', placeholder='Euler P column name', value=str(self.columns.get('euler_p', "")))
                             ]),
-                            dbc.Col(id='rot-y-field', children=[
-                                dbc.Label('Rotation Y:'),
-                                dbc.Input(id='rot-y-input', type='text', placeholder='Rotation Y column name', value=self.columns.get('rot_y', None))
+                            dbc.Col(id='euler-r-field', children=[
+                                dbc.Label('Euler-r:'),
+                                dbc.Input(id='euler-r-input', type='text', placeholder='Euler R column name', value=str(self.columns.get('euler_r', "")))
                             ]),
-                            dbc.Col(id='rot-z-field', children=[
-                                dbc.Label('Rotation Z:'),
-                                dbc.Input(id='rot-z-input', type='text', placeholder='Rotation Z column name', value=self.columns.get('rot_z', None))
+                            dbc.Col(id='state-field', children=[
+                                dbc.Label('State:'),
+                                dbc.Input(id='state-input', type='text', placeholder='State column name', value=str(self.columns.get('state', "")))
                             ]),
-                            dbc.Col(id='mag-x-field', children=[
-                                dbc.Label('Magnetometer X:'),
-                                dbc.Input(id='mag-x-input', type='text', placeholder='Magnetometer X column name', value=self.columns.get('mag_x', None))
-                            ]),
-                            dbc.Col(id='mag-y-field', children=[
-                                dbc.Label('Magnetometer Y:'),
-                                dbc.Input(id='mag-y-input', type='text', placeholder='Magnetometer Y column name', value=self.columns.get('mag_y', None))
-                            ]),
-                            dbc.Col(id='mag-z-field', children=[
-                                dbc.Label('Magnetometer Z:'),
-                                dbc.Input(id='mag-z-input', type='text', placeholder='Magnetometer Z column name', value=self.columns.get('mag_z', None))
+                            dbc.Col(id='timestamp-field', children=[
+                                dbc.Label('Timestamp:'),
+                                dbc.Input(id='timestamp-input', type='text', placeholder='Timestamp column name', value=str(self.columns.get('timestamp', "")))
                             ]),
                         ], label='Data Column Names'),
                         dbc.DropdownMenu([
@@ -141,11 +116,7 @@ class DashApp:
                                 dbc.Label('Draw interval (ms)'),
                                 dbc.Input(id='draw-interval-input', type='number', value=self.draw_interval)
                             ]),
-                            dbc.Col([
-                                dbc.Label('Data interval (ms)'),
-                                dbc.Input(id='data-interval-input', type='number', value=self.data_interval)
-                            ]),
-                        ], label='Intervals'),
+                        ], label='Interval'),
                     ], style={'display': 'flex', 'align-items': 'center'}),
                 ]),
             ], style={'float': 'right', 'width': '20%'}),

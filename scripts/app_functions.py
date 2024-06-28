@@ -11,6 +11,11 @@ from typing import Union
 class AppFunctions(DashApp):
     def __init__(self) -> None:
         super().__init__()
+
+        self.state = None
+        self.default_interval = 0.05  # In seconds
+        self.data_interval = self.default_interval
+
         self.fetcher = DataFetcher()
         self.fetcher.update_source(self.url, self.columns)
         self.reader = DataReader()
@@ -18,31 +23,33 @@ class AppFunctions(DashApp):
         self.configuration = DataConfiguration()
 
         self.init_trajectory_data()
-        self.init_state()
 
     def init_trajectory_data(self):
         self.trajectory_data = pd.DataFrame(columns=['DEV_X', 'DEV_Y', 'ALT'])
 
-    def init_state(self):
-        self.state = None
-
-    def manage_state(self, new_data: pd.DataFrame) -> None:
-        state = int(new_data['state'].iloc[0])
-        if state != self.state:
-            self.trajectory.show_new_state(state)
-        self.state = state
-
     def manage_data(self, new_data: Union[pd.DataFrame, None]) -> None:
         last_data = None
+
         if new_data is not None:
             if last_data is None or last_data is not None and not new_data.equals(last_data):
-                self.manage_state(new_data)
-                print(new_data)  # If needed
-                trajectory_data = self.configuration.configure_data(new_data)
+                print(new_data)
+
+                state, interval, trajectory_data = self.configuration.configure_data(new_data)
+                if state != self.state and state is not None:
+                    self.trajectory.show_state(state)
+                self.state = state
+                if interval is not None:
+                    self.data_interval = interval
+                    print(f'Data interval is {self.data_interval:.2f} seconds.')
+                else:
+                    self.data_interval = self.default_interval
+                    print(f'Data interval is the default {self.data_interval:.2f} seconds.')
+
                 if trajectory_data is not None:
                     frames = [frame for frame in [self.trajectory_data, trajectory_data] if not frame.empty]
                     if frames:
                         self.trajectory_data = pd.concat(frames)
+
             last_data = new_data
 
     async def get_data_asynchronously(self) -> None:
@@ -55,15 +62,11 @@ class AppFunctions(DashApp):
 
                 self.manage_data(new_data)
 
-                if self.data_interval > 0 and isinstance(self.data_interval, int):
-                    await asyncio.sleep(self.data_interval / 1000)
-                else:
-                    await asyncio.sleep(1)
+                await asyncio.sleep(self.data_interval)
 
     def clear_graph(self) -> None:
-        if self.source == 'file':
-            self.reader.reset_data()
-        self.configuration.init_data_trackers()
         self.init_trajectory_data()
-        self.init_state()
+        if self.source == 'file':
+            self.reader.init_readed()
+        self.configuration.init_data_trackers()
         self.trajectory.init_figure()

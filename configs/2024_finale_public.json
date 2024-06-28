@@ -1,0 +1,18 @@
+{
+    "source": "file",
+    "updating": "updating",
+    "url": "https://czechrockets.euweb.cz/get.php",
+    "file-path": "data/2024_finale_public.csv",
+    "draw-interval": 200,
+    "columns": {
+        "lon": "gps_data_longitude",
+        "lat": "gps_data_latitude",
+        "alt": "pos_data_rel_altitude",
+        "acc": "",
+        "euler_h": "",
+        "euler_p": "",
+        "euler_r": "",
+        "state": "fsw_state_state",
+        "timestamp": "timestamp"
+    }
+}

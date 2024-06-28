@@ -8,12 +8,11 @@ import time
 class TrajectoryGraph:
     def __init__(self):
         self.init_figure()
-        self.init_mission_image()
+        self.init_images()
 
     def init_figure(self) -> None:
-        init_data = pd.DataFrame({'DEV_X': [0], 'DEV_Y': [0], 'ALT': [0]})
-        self.figure = px.scatter_3d(init_data,
-                                    x='DEV_X', y='DEV_Y', z='ALT', title='Trajectory Visualization', template='plotly_dark',
+        self.figure = px.scatter_3d(pd.DataFrame({'DEV_X': [0], 'DEV_Y': [0], 'ALT': [0]}),
+                                    x='DEV_X', y='DEV_Y', z='ALT', title='Trajectory Visualizaion', template='plotly_dark',
                                     color='ALT', color_continuous_scale=px.colors.sequential.Plasma)
         self.figure.update_layout(scene=dict(
             xaxis_title='Deviation X (m)',
@@ -36,7 +35,7 @@ class TrajectoryGraph:
             camera=dict(eye=dict(x=1, y=3, z=1)),
             uirevision=True))
 
-    def init_mission_image(self) -> None:
+    def init_images(self) -> None:
         self.figure.update_layout(images=[
             dict(
                 source=Image.open('scripts/assets/sherpa.png'),
@@ -52,11 +51,11 @@ class TrajectoryGraph:
             )]
         )
 
-    def show_new_state(self, state: int) -> None:
-        self.init_mission_image()  # Use it to remove the previous state image
+    def show_state(self, state: float) -> None:
+        self.init_images()  # Use it to remove the previous state image
         self.figure.add_layout_image(
             dict(
-                source=Image.open(f'scripts/assets/state_{state}.png'),
+                source=Image.open(f'scripts/assets/state_{int(state)}.png'),
                 xref='paper',
                 yref='paper',
                 x=0.4,
@@ -67,13 +66,12 @@ class TrajectoryGraph:
                 opacity=0.8,
             )
         )
-        self.time_state_changed = time.time()
-        threading.Thread(target=self.schedule_init_mission_image).start()  # mission 'update_layout(images=' will reset the state image
+        threading.Thread(target=self.close_state).start()
 
-    def schedule_init_mission_image(self) -> None:
+    def close_state(self) -> None:
         delay = 2  # seconds
         time.sleep(delay)
-        self.init_mission_image()
+        self.init_images()
 
     def update_graph(self, points: pd.DataFrame) -> None:
         if points.empty:
