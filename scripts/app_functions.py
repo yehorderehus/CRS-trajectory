@@ -65,8 +65,9 @@ class AppFunctions(DashApp):
                 await asyncio.sleep(self.data_interval)
 
     def clear_graph(self) -> None:
-        self.init_trajectory_data()
         if self.source == 'file':
             self.reader.init_readed()
         self.configuration.init_data_trackers()
+        self.init_trajectory_data()
         self.trajectory.init_figure()
+        self.trajectory.init_images()
